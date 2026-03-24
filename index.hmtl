@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<title>Helkor Minecraft Server</title>
+
+<style>
+body {
+  margin: 0;
+  font-family: Arial;
+  background: url('https://wallpapercave.com/wp/wp2757874.jpg') no-repeat center/cover;
+  color: white;
+}
+
+.overlay {
+  background: rgba(0,0,0,0.75);
+  min-height: 100vh;
+  padding: 20px;
+  text-align: center;
+}
+
+h1 {
+  font-size: 50px;
+}
+
+.box {
+  background: rgba(0,0,0,0.6);
+  padding: 20px;
+  margin: 20px auto;
+  border-radius: 15px;
+  width: 80%;
+}
+
+button {
+  padding: 15px 25px;
+  margin: 10px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.copy { background: orange; }
+.discord { background: #5865F2; color: white; }
+.apply { background: green; color: white; }
+
+input, textarea {
+  width: 80%;
+  padding: 10px;
+  margin: 5px;
+  border-radius: 8px;
+  border: none;
+}
+
+iframe {
+  border-radius: 15px;
+}
+
+.news {
+  text-align: left;
+}
+</style>
+</head>
+
+<body>
+
+<div class="overlay">
+
+<h1>🎮 HELKOR SERVER</h1>
+
+<div class="box">
+<h2 id="players">Načítám hráče...</h2>
+<h2>IP: cz1.helkor.eu:41004</h2>
+
+<button class="copy" onclick="copyIP()">📋 Kopírovat IP</button>
+<button class="discord" onclick="window.open('https://discord.gg/t4Caja7V7')">💬 Discord</button>
+</div>
+
+<div class="box">
+<h2>📋 Přihláška do týmu</h2>
+
+<form action="https://formspree.io/f/tvojeID" method="POST">
+<input type="text" name="nick" placeholder="Tvůj nick" required><br>
+<input type="text" name="pozice" placeholder="Builder/Admin/Helper" required><br>
+<textarea name="text" placeholder="Proč chceš do týmu?" required></textarea><br>
+<button class="apply" type="submit">Odeslat</button>
+</form>
+</div>
+
+<div class="box">
+<h2>🗺️ Dynmapa</h2>
+<iframe src="http://cz1.helkor.eu:41185" width="100%" height="400"></iframe>
+</div>
+
+<div class="box news">
+<h2>📰 Novinky</h2>
+<p>🔥 Server spuštěn!</p>
+<p>⚔️ Připravujeme nové eventy</p>
+<p>👑 Nabíráme Adminy a Helpery</p>
+</div>
+
+</div>
+
+<script>
+// Minecraft hráči
+fetch("https://api.mcsrvstat.us/2/cz1.helkor.eu:41004")
+.then(res => res.json())
+.then(data => {
+  document.getElementById("players").innerText =
+    "Hráči Online: " + data.players.online + " / " + data.players.max;
+});
+
+// Kopírování IP
+function copyIP() {
+  navigator.clipboard.writeText("cz1.helkor.eu:41004");
+  alert("IP zkopírována!");
+}
+</script>
+
+</body>
+</html>
