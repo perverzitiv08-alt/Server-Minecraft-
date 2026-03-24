@@ -2,58 +2,73 @@
 <html lang="cs">
 <head>
 <meta charset="UTF-8">
-<title>Helkor Minecraft Server</title>
+<title>Helkor Server</title>
+
+<link href="https://fonts.cdnfonts.com/css/minecraftia" rel="stylesheet">
 
 <style>
 body {
   margin: 0;
-  font-family: Arial;
-  background: url('https://wallpapercave.com/wp/wp2757874.jpg') no-repeat center/cover;
+  font-family: 'Minecraftia', sans-serif;
+  background: url('https://i.imgur.com/8kP9Q0K.jpg') no-repeat center/cover;
   color: white;
-}
-
-.overlay {
-  background: rgba(0,0,0,0.75);
-  min-height: 100vh;
-  padding: 20px;
   text-align: center;
 }
 
-h1 {
-  font-size: 50px;
+.overlay {
+  background: rgba(0,0,0,0.8);
+  min-height: 100vh;
+  padding: 20px;
 }
 
+h1 {
+  font-size: 40px;
+  text-shadow: 3px 3px black;
+}
+
+/* Minecraft button styl */
+.mc-btn {
+  display: inline-block;
+  padding: 15px 25px;
+  margin: 10px;
+  font-size: 14px;
+  color: white;
+  background: linear-gradient(#727272, #4a4a4a);
+  border: 3px solid #2b2b2b;
+  box-shadow: inset -3px -3px #2b2b2b, inset 3px 3px #a0a0a0;
+  cursor: pointer;
+}
+
+.mc-btn:hover {
+  background: linear-gradient(#8a8a8a, #5a5a5a);
+}
+
+.mc-btn:active {
+  box-shadow: inset 3px 3px #2b2b2b, inset -3px -3px #a0a0a0;
+}
+
+/* boxy */
 .box {
-  background: rgba(0,0,0,0.6);
+  background: rgba(50,50,50,0.9);
+  border: 4px solid #2b2b2b;
   padding: 20px;
   margin: 20px auto;
-  border-radius: 15px;
   width: 80%;
 }
 
-button {
-  padding: 15px 25px;
-  margin: 10px;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-  font-size: 16px;
-}
-
-.copy { background: orange; }
-.discord { background: #5865F2; color: white; }
-.apply { background: green; color: white; }
-
+/* inputy */
 input, textarea {
   width: 80%;
   padding: 10px;
   margin: 5px;
-  border-radius: 8px;
-  border: none;
+  background: #2b2b2b;
+  border: 2px solid #555;
+  color: white;
 }
 
+/* dynmap */
 iframe {
-  border-radius: 15px;
+  border: 4px solid #2b2b2b;
 }
 
 .news {
@@ -66,24 +81,26 @@ iframe {
 
 <div class="overlay">
 
-<h1>🎮 HELKOR SERVER</h1>
+<h1>⛏️ HELKOR SERVER ⛏️</h1>
 
 <div class="box">
 <h2 id="players">Načítám hráče...</h2>
-<h2>IP: cz1.helkor.eu:41004</h2>
+<p>IP: cz1.helkor.eu:41004</p>
 
-<button class="copy" onclick="copyIP()">📋 Kopírovat IP</button>
-<button class="discord" onclick="window.open('https://discord.gg/t4Caja7V7')">💬 Discord</button>
+<div>
+<button class="mc-btn" onclick="copyIP()">📋 Kopírovat IP</button>
+<button class="mc-btn" onclick="window.open('https://discord.gg/t4Caja7V7')">💬 Discord</button>
+</div>
 </div>
 
 <div class="box">
-<h2>📋 Přihláška do týmu</h2>
+<h2>📋 Přihláška</h2>
 
 <form action="https://formspree.io/f/tvojeID" method="POST">
-<input type="text" name="nick" placeholder="Tvůj nick" required><br>
+<input type="text" name="nick" placeholder="Nick" required><br>
 <input type="text" name="pozice" placeholder="Builder/Admin/Helper" required><br>
 <textarea name="text" placeholder="Proč chceš do týmu?" required></textarea><br>
-<button class="apply" type="submit">Odeslat</button>
+<button class="mc-btn" type="submit">Odeslat</button>
 </form>
 </div>
 
@@ -94,15 +111,15 @@ iframe {
 
 <div class="box news">
 <h2>📰 Novinky</h2>
-<p>🔥 Server spuštěn!</p>
-<p>⚔️ Připravujeme nové eventy</p>
-<p>👑 Nabíráme Adminy a Helpery</p>
+<p>🔥 Server spuštěn</p>
+<p>⚔️ Eventy brzy</p>
+<p>👑 Nabíráme tým</p>
 </div>
 
 </div>
 
 <script>
-// Minecraft hráči
+// hráči
 fetch("https://api.mcsrvstat.us/2/cz1.helkor.eu:41004")
 .then(res => res.json())
 .then(data => {
@@ -110,7 +127,7 @@ fetch("https://api.mcsrvstat.us/2/cz1.helkor.eu:41004")
     "Hráči Online: " + data.players.online + " / " + data.players.max;
 });
 
-// Kopírování IP
+// copy
 function copyIP() {
   navigator.clipboard.writeText("cz1.helkor.eu:41004");
   alert("IP zkopírována!");
