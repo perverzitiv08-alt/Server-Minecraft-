@@ -1,177 +1,213 @@
-<!DOCTYPE html>
+!DOCTYPE html>
 <html lang="cs">
 <head>
-<meta charset="UTF-8">
-<title>Helkor Server</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CZ1 Helkor Minecraft server</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --card: #111827;
+      --text: #e2e8f0;
+      --accent: #38bdf8;
+      --muted: #94a3b8;
+      --success: #22c55e;
+      --danger: #f43f5e;
+    }
 
-<link href="https://fonts.cdnfonts.com/css/minecraftia" rel="stylesheet">
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: Inter, "Segoe UI", Arial, sans-serif; color: var(--text); background: radial-gradient(circle at 20% 0%, rgba(23,35,57,0.75), rgba(11,18,34,0.9) 55%), url('minecraft-bg.png'); background-size: cover; background-attachment: fixed; background-position: center; }
+    .page { max-width: 1300px; margin: 0 auto; padding: 1.25rem; }
+    h1,h2,h3 { margin: .25rem 0 .75rem; }
+    .hero { background: linear-gradient(135deg, rgba(56,189,248,.25), rgba(30,41,59,.65)); border: 1px solid #334155; border-radius: 16px; padding: 1.25rem; margin-bottom: 1rem; text-align: center; box-shadow: 0 12px 30px rgba(0,0,0,.4); position: relative; overflow: hidden; }
+    .hero h1 { font-size: clamp(2.2rem, 5vw, 3.4rem); letter-spacing: .05em; color: #8be5ff; text-shadow: 0 0 14px rgba(56,189,248,.6); margin: .3rem 0 .8rem; }
+    .hero .cta { display: flex; justify-content: center; align-items: center; gap: .65rem; flex-wrap: wrap; }
+    .cube { width: 80px; height: 80px; margin: 0 auto 1rem; transform-style: preserve-3d; animation: spin 5s linear infinite; }
+    .cube div { position: absolute; width: 80px; height: 80px; border: 2px solid #0f172a; box-shadow: inset 0 0 7px rgba(0,0,0,.5); }
+    .cube .front, .cube .back, .cube .right, .cube .left { background: linear-gradient(145deg, #6dbf1b, #4d8f1d); border-color: #2f4b0e; }
+    .cube .top { background: linear-gradient(145deg, #9cce3d, #8bb72f); border-color: #49731d; }
+    .cube .bottom { background: linear-gradient(145deg, #7a6545, #5a4a32); border-color: #3c2f23; }
+    .cube .front { transform: translateZ(40px); }
+    .cube .back { transform: rotateY(180deg) translateZ(40px); }
+    .cube .right { transform: rotateY(90deg) translateZ(40px); }
+    .cube .left { transform: rotateY(-90deg) translateZ(40px); }
+    .cube .top { transform: rotateX(90deg) translateZ(40px); }
+    .cube .bottom { transform: rotateX(-90deg) translateZ(40px); }
+    @keyframes spin { 0% { transform: rotateX(0deg) rotateY(0deg);} 100% { transform: rotateX(360deg) rotateY(360deg);} }
+    .btn { border: none; border-radius: 12px; padding: .75rem 1rem; color: #fff; font-weight: 700; cursor: pointer; transition: 0.2s ease; text-transform: uppercase; letter-spacing: .04em; box-shadow: 0 8px 20px rgba(0,0,0,.35); }
+    .btn:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 14px 22px rgba(0,0,0,.45); }
+    .btn-copy { background: linear-gradient(140deg, #22c55e, #10b981); }
+    .btn-copy::after { content: ' 📋'; }
+    .btn-map { background: linear-gradient(140deg, #0ea5e9, #0284c7); }
+    .btn-discord { background: linear-gradient(140deg, #5865f2, #4f46e5); }
+    .btn-discord::after { content: ' 💬'; }
+    .btn-livechat { background: linear-gradient(140deg, #f97316, #fb923c); }
+    .btn-livechat::after { content: ' 🔊'; }
+    .grid { display: grid; grid-gap: 1rem; }
+    .grid-2 { grid-template-columns: 1fr 1fr; }
+    .card { background: var(--card); border: 1px solid #1f2937; border-radius: 14px; padding: 1rem; box-shadow: 0 12px 25px rgba(0,0,0,.3); }
+    .btn { border: none; border-radius: 8px; padding: .65rem .9rem; color: #fff; font-weight: 600; cursor: pointer; transition: .2s ease; }
+    .btn:hover { transform: translateY(-1px); }
+    .btn-copy { background: #2563eb; }
+    .btn-map { background: #0ea5e9; }
+    .btn-discord { background: #5865f2; }
+    .btn-news { background: #8b5cf6; }
+    .status { display: inline-block; font-weight: 700; padding: .18rem .55rem; border-radius: 999px; }
+    .stat-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(150px,1fr)); gap: .75rem; }
+    .stat-box { background: #1e293b; border: 1px solid #334155; border-radius: 10px; padding: .75rem; }
+    .codeblock { background: #0f172a; border: 1px dashed #334155; padding: .55rem .75rem; border-radius: 8px; overflow-x: auto; word-break: break-all; }
+    .inline-links > a { margin-right: .5rem; text-decoration: none; color: var(--accent); }
+    .news-list { list-style: none; margin: 0; padding: 0; }
+    .news-list li { margin-bottom: .6rem; border-left: 3px solid #8b5cf6; padding-left: .7rem; }
 
-<style>
-body {
-  margin: 0;
-  font-family: 'Minecraftia', sans-serif;
-  background: url('https://i.imgur.com/VYpYBqS.jpg') no-repeat center/cover;
-  color: white;
-}
-
-/* overlay */
-.overlay {
-  background: rgba(0,0,0,0.6);
-  min-height: 100vh;
-  padding: 20px;
-  text-align: center;
-}
-
-/* title */
-h1 {
-  font-size: 50px;
-  text-shadow: 4px 4px black;
-}
-
-/* wooden panel */
-.panel {
-  background: url('https://i.imgur.com/6b7R6cD.png');
-  background-size: cover;
-  border: 5px solid #3b2a18;
-  padding: 20px;
-  margin: 20px auto;
-  width: 85%;
-  box-shadow: 0 0 20px black;
-}
-
-/* buttons */
-.mc-btn {
-  padding: 15px 30px;
-  margin: 10px;
-  border: none;
-  font-family: 'Minecraftia';
-  cursor: pointer;
-  font-size: 14px;
-  color: white;
-  background: linear-gradient(#a66b2d, #6b3f1d);
-  border: 3px solid #3b2a18;
-  box-shadow: inset -3px -3px #3b2a18, inset 3px 3px #d8a35d;
-}
-
-.mc-btn:hover {
-  filter: brightness(1.2);
-}
-
-.blue {
-  background: linear-gradient(#5b6ee1, #2d3f9f);
-}
-
-.green {
-  background: linear-gradient(#5dbb63, #2e7d32);
-}
-
-/* layout */
-.row {
-  display: flex;
-  flex-wrap: wrap;
-}
-
-.col {
-  flex: 1;
-  min-width: 300px;
-  padding: 10px;
-}
-
-/* inputs */
-input, textarea {
-  width: 80%;
-  padding: 10px;
-  margin: 5px;
-  background: #2b1a0d;
-  border: 2px solid black;
-  color: white;
-}
-
-/* dynmap preview */
-.map-preview {
-  width: 100%;
-  border: 4px solid black;
-}
-</style>
+    @media (max-width: 980px){ .grid-2 { grid-template-columns: 1fr; }}
+  </style>
 </head>
-
 <body>
+  <div class="page">
+    <section class="hero">
+      <div class="cube">
+        <div class="front"></div><div class="back"></div><div class="right"></div><div class="left"></div><div class="top"></div><div class="bottom"></div>
+      </div>
+      <h1>CraftCore</h1>
+      <div class="cta">
+        <button class="btn btn-copy" id="copyIpBtn">Kopírovat IP</button>
+        <a class="btn btn-map" href="http://cz1.helkor.eu:41185/" target="_blank" rel="noreferrer">Dynmap</a>
+        <a class="btn btn-discord" href="https://discord.gg/kqQ5WjS4" target="_blank" rel="noreferrer">Připojit Discord</a>
+        <a class="btn btn-livechat" href="https://discord.gg/kqQ5WjS4" target="_blank" rel="noreferrer">Live chat 💬</a>
+      </div>
+      <p style="margin-top:.7rem;">Aktuální stav: <span id="serverStatus" class="status">Načítám...</span> • Hráčů online: <strong id="onlineCount">0</strong>/<span id="maxPlayers">0</span></p>
+      <p style="margin-top:.25rem; font-size:.95rem; color:#b0c4d9;">Nejlepší: <span id="topMoneyName">-</span> (peněz), <span id="topKillsName">-</span> (killů)</p>
+    </section>
 
-<div class="overlay">
+    <section class="grid grid-2" style="margin-top:1rem;">
+      <div class="card">
+        <h2>Aktuální info</h2>
+        <div class="stat-grid">
+          <div class="stat-box"><h3>Verze</h3><p id="serverVersion">--</p></div>
+          <div class="stat-box"><h3>Motd</h3><p id="serverMotd">--</p></div>
+          <div class="stat-box"><h3>IP (kopírování)</h3><div class="codeblock" id="ipCode">cz1.helkor.eu:41004</div></div>
+        </div>
+      </div>
 
-<h1>⛏️ HELKOR SERVER ⛏️</h1>
+      <div class="card">
+        <h2>Živá dynmap</h2>
+        <p>Vložená mapa je z dynmap serveru (zpoždění 10–20s).</p>
+        <iframe src="http://cz1.helkor.eu:41185/" frameborder="0" style="width:100%;height:360px;border-radius:12px;border:1px solid #334155;"></iframe>
+      </div>
+    </section>
 
-<div class="panel">
-<h2 id="players">Načítám hráče...</h2>
-<h3>IP: cz1.helkor.eu:41004</h3>
+    <section class="card" style="margin-top:1rem;">
+      <h2>Novinky a eventy</h2>
+      <ul class="news-list" id="newsList">
+        <li><strong>24.3.2026</strong> - Přidán nový průzkumný event s odměnami (loot, tokeny, speciální gear).</li>
+        <li><strong>28.3.2026</strong> - Start přestavby spawn zóny + soutěž o nejlepší design.</li>
+        <li><strong>3.4.2026</strong> - Plánovaný PvP turnaj (registrace v kanálu #pvp).</li>
+        <li><strong>10.4.2026</strong> - Komunitní stavba města a odměna za největší postup.</li>
+      </ul>
+      <p class="inline-links">Starší novinky: <a href="#">archive</a> | <a href="#">pravidla</a> | <a href="#">podpora</a></p>
+    </section>
 
-<button class="mc-btn" onclick="copyIP()">📋 Kopírovat IP</button>
-<button class="mc-btn blue" onclick="window.open('https://discord.gg/t4Caja7V7')">💬 Discord</button>
-</div>
+    <section class="card" style="margin-top:1rem;">
+      <h2>Statistiky hráčů</h2>
+      <div class="stat-grid" id="playerStats">
+        <div class="stat-box"><strong>Hráč</strong><br/><span id="topMoneyName">-</span><br/>Peněz: <span id="topMoney">0</span></div>
+        <div class="stat-box"><strong>Hráč</strong><br/><span id="topKillsName">-</span><br/>Killů: <span id="topKills">0</span></div>
+        <div class="stat-box"><strong>Nejlepší úspěch</strong><br/><span id="topProgress">-</span></div>
+      </div>
+    </section>
+  </div>
 
-<div class="panel">
-<h2>📋 Přihláška do týmu</h2>
+  <script>
+    const ip = 'cz1.helkor.eu:41004';
+    const dynmap = 'http://cz1.helkor.eu:41185/';
 
-<form action="https://formspree.io/f/tvojeID" method="POST">
-<input type="text" name="nick" placeholder="Nick" required><br>
-<input type="text" name="pozice" placeholder="Builder/Admin/Helper" required><br>
-<textarea name="text" placeholder="Proč chceš do týmu?" required></textarea><br>
-<button class="mc-btn green">Odeslat</button>
-</form>
-</div>
+    document.getElementById('copyIpBtn').addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(ip);
+        alert('IP adresa zkopírována: ' + ip);
+      } catch (err) {
+        prompt('Kopírujte ručně:', ip);
+      }
+    });
 
-<div class="panel row">
+    async function refreshServerStatus() {
+      const statusEl = document.getElementById('serverStatus');
+      const onlineEl = document.getElementById('onlineCount');
+      const maxEl = document.getElementById('maxPlayers');
+      const versionEl = document.getElementById('serverVersion');
+      const motdEl = document.getElementById('serverMotd');
 
-<div class="col">
-<h2>🗺️ Dynmapa serveru</h2>
+      async function fetchStatus(url) {
+        const response = await fetch(url);
+        if (!response.ok) throw new Error('API error ' + response.status);
+        return await response.json();
+      }
 
-<img src="https://i.imgur.com/6z9Yb6X.png" class="map-preview">
+      try {
+        let data;
+        try {
+          data = await fetchStatus('https://api.mcsrvstat.us/2/' + ip);
+        } catch (e) {
+          // (nezabezpečené prostředí file:///CORS) fallback přes veřejný proxy
+          data = await fetchStatus('https://api.allorigins.win/raw?url=' + encodeURIComponent('https://api.mcsrvstat.us/2/' + ip));
+        }
 
-<br>
+        if (!data.online) {
+          statusEl.textContent = 'Offline';
+          statusEl.style.background = 'var(--danger)';
+          onlineEl.textContent = '0';
+          maxEl.textContent = '0';
+          versionEl.textContent = '-';
+          motdEl.textContent = '-';
+          return;
+        }
 
-<button class="mc-btn" onclick="window.open('http://cz1.helkor.eu:41185')">
-Zobrazit celou mapu
-</button>
-</div>
+        statusEl.textContent = 'Online';
+        statusEl.style.background = 'var(--success)';
 
-<div class="col">
-<h2>📰 Novinky</h2>
-<p>📅 Nový event tuto sobotu!</p>
-<p>⚙️ Nové updaty přidány</p>
-<p>🛠️ Opravy serveru</p>
+        const playersNow = data.players && data.players.online != null ? data.players.online : 0;
+        const maxPlayers = data.players && data.players.max != null ? data.players.max : (data.maxplayers || 0);
 
-<button class="mc-btn">Více novinek</button>
-</div>
+        onlineEl.textContent = playersNow;
+        maxEl.textContent = maxPlayers;
+        versionEl.textContent = data.version || 'neznámá';
+        motdEl.textContent = (data.motd?.clean || []).join(' ');
 
-</div>
+        // Jak přidat pravou data lze nahradit voláním vlastního backendu pro economy/kill values
+        const ranking = [
+          {name:'PetaCZ', money:245000, kills:488},
+          {name:'Majkel', money:214200, kills:529},
+          {name:'Tomas', money:196850, kills:460}
+        ];
 
-<div class="panel">
-<h2>👤 Účet</h2>
+        const topMoney = ranking.reduce((a,b)=> b.money>a.money ? b : a, ranking[0]);
+        const topKills = ranking.reduce((a,b)=> b.kills>a.kills ? b : a, ranking[0]);
 
-<input type="email" placeholder="Email"><br>
-<input type="password" placeholder="Heslo"><br>
+        document.getElementById('topMoneyName').textContent = topMoney.name;
+        document.getElementById('topMoney').textContent = topMoney.money.toLocaleString('cs-CZ');
+        document.getElementById('topKillsName').textContent = topKills.name;
+        document.getElementById('topKills').textContent = topKills.kills.toLocaleString('cs-CZ');
+        document.getElementById('topProgress').textContent = 'Nejlepší ekonomie a bojové skóre až do zítřejší akce!';
 
-<button class="mc-btn green">Registrace</button>
-<button class="mc-btn blue">Přihlášení</button>
-</div>
+      } catch (error) {
+        console.error('Chyba při načítání serveru:', error);
+        statusEl.textContent = 'Chyba';
+        statusEl.style.background = '#f43f5e';
+        onlineEl.textContent = '-';
+        maxEl.textContent = '-';
+        versionEl.textContent = '-';
+        motdEl.textContent = '-';
+      }
+    }
 
-</div>
+    // Nastavení statických polí
+    document.getElementById('serverIp').textContent = ip;
+    document.getElementById('dynmapUrl').textContent = dynmap;
+    document.getElementById('ipCode').textContent = ip;
 
-<script>
-// hráči
-fetch("https://api.mcsrvstat.us/2/cz1.helkor.eu:41004")
-.then(res => res.json())
-.then(data => {
-  document.getElementById("players").innerText =
-    "Hráči Online: " + data.players.online + " / " + data.players.max;
-});
-
-// copy IP
-function copyIP() {
-  navigator.clipboard.writeText("cz1.helkor.eu:41004");
-  alert("IP zkopírována!");
-}
-</script>
-
+    refreshServerStatus();
+    setInterval(refreshServerStatus, 60_000);
+  </script>
 </body>
 </html>
