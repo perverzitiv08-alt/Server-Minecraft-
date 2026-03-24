@@ -10,66 +10,59 @@
 body {
   margin: 0;
   font-family: 'Minecraftia', sans-serif;
-  background: url('https://i.imgur.com/t6YV8bK.jpg') no-repeat center/cover;
+  background: url('https://i.imgur.com/VYpYBqS.jpg') no-repeat center/cover;
   color: white;
 }
 
-/* tmavý overlay */
+/* overlay */
 .overlay {
-  background: rgba(0,0,0,0.7);
+  background: rgba(0,0,0,0.6);
   min-height: 100vh;
   padding: 20px;
   text-align: center;
 }
 
-/* nadpis */
+/* title */
 h1 {
   font-size: 50px;
-  text-shadow: 5px 5px black;
-  animation: glow 2s infinite alternate;
+  text-shadow: 4px 4px black;
 }
 
-@keyframes glow {
-  from { text-shadow: 5px 5px black; }
-  to { text-shadow: 5px 5px black, 0 0 20px lime; }
-}
-
-/* panely */
+/* wooden panel */
 .panel {
-  background: rgba(80,60,30,0.9);
-  border: 5px solid #2b1a0d;
-  box-shadow: inset 0 0 15px black;
+  background: url('https://i.imgur.com/6b7R6cD.png');
+  background-size: cover;
+  border: 5px solid #3b2a18;
   padding: 20px;
   margin: 20px auto;
   width: 85%;
+  box-shadow: 0 0 20px black;
 }
 
-/* tlačítka */
+/* buttons */
 .mc-btn {
   padding: 15px 30px;
   margin: 10px;
-  background: linear-gradient(#8c5a2b, #4e2d12);
-  border: 4px solid #2b1a0d;
-  color: white;
+  border: none;
+  font-family: 'Minecraftia';
   cursor: pointer;
-  transition: 0.2s;
+  font-size: 14px;
+  color: white;
+  background: linear-gradient(#a66b2d, #6b3f1d);
+  border: 3px solid #3b2a18;
+  box-shadow: inset -3px -3px #3b2a18, inset 3px 3px #d8a35d;
 }
 
 .mc-btn:hover {
-  transform: scale(1.1);
+  filter: brightness(1.2);
 }
 
-.blue { background: linear-gradient(#5b6ee1, #2d3f9f); }
-.green { background: linear-gradient(#5dbb63, #2e7d32); }
+.blue {
+  background: linear-gradient(#5b6ee1, #2d3f9f);
+}
 
-/* inputy */
-input, textarea {
-  width: 80%;
-  padding: 10px;
-  margin: 5px;
-  background: #2b1a0d;
-  border: 2px solid black;
-  color: white;
+.green {
+  background: linear-gradient(#5dbb63, #2e7d32);
 }
 
 /* layout */
@@ -84,11 +77,20 @@ input, textarea {
   padding: 10px;
 }
 
-/* dynmap */
-iframe {
+/* inputs */
+input, textarea {
+  width: 80%;
+  padding: 10px;
+  margin: 5px;
+  background: #2b1a0d;
+  border: 2px solid black;
+  color: white;
+}
+
+/* dynmap preview */
+.map-preview {
   width: 100%;
-  height: 400px;
-  border: 3px solid black;
+  border: 4px solid black;
 }
 </style>
 </head>
@@ -108,11 +110,11 @@ iframe {
 </div>
 
 <div class="panel">
-<h2>📋 Přihláška</h2>
+<h2>📋 Přihláška do týmu</h2>
 
 <form action="https://formspree.io/f/tvojeID" method="POST">
 <input type="text" name="nick" placeholder="Nick" required><br>
-<input type="text" name="pozice" placeholder="Pozice" required><br>
+<input type="text" name="pozice" placeholder="Builder/Admin/Helper" required><br>
 <textarea name="text" placeholder="Proč chceš do týmu?" required></textarea><br>
 <button class="mc-btn green">Odeslat</button>
 </form>
@@ -121,15 +123,24 @@ iframe {
 <div class="panel row">
 
 <div class="col">
-<h2>🗺️ Dynmapa</h2>
-<iframe src="http://cz1.helkor.eu:41185"></iframe>
+<h2>🗺️ Dynmapa serveru</h2>
+
+<img src="https://i.imgur.com/6z9Yb6X.png" class="map-preview">
+
+<br>
+
+<button class="mc-btn" onclick="window.open('http://cz1.helkor.eu:41185')">
+Zobrazit celou mapu
+</button>
 </div>
 
 <div class="col">
 <h2>📰 Novinky</h2>
-<p>🔥 Server spuštěn</p>
-<p>⚔️ Eventy brzy</p>
-<p>👑 Nabíráme tým</p>
+<p>📅 Nový event tuto sobotu!</p>
+<p>⚙️ Nové updaty přidány</p>
+<p>🛠️ Opravy serveru</p>
+
+<button class="mc-btn">Více novinek</button>
 </div>
 
 </div>
@@ -137,13 +148,11 @@ iframe {
 <div class="panel">
 <h2>👤 Účet</h2>
 
-<input type="email" id="email" placeholder="Email"><br>
-<input type="password" id="password" placeholder="Heslo"><br>
+<input type="email" placeholder="Email"><br>
+<input type="password" placeholder="Heslo"><br>
 
-<button class="mc-btn green" onclick="register()">Registrace</button>
-<button class="mc-btn blue" onclick="login()">Přihlášení</button>
-
-<p id="user"></p>
+<button class="mc-btn green">Registrace</button>
+<button class="mc-btn blue">Přihlášení</button>
 </div>
 
 </div>
